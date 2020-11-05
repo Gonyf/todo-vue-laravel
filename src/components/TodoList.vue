@@ -77,7 +77,7 @@ export default {
     border-width: 5px;
     border-color: seagreen;
     border-radius: 7px;
-    margin-bottom: 60px;
+    margin-bottom: 45px;
     // border-radius: 500px;
 
     &:focus {
@@ -96,23 +96,27 @@ export default {
     margin-bottom: 12px;
 
     .textAndCheckbox {
+        width: 100%;
         display: flex;
         align-items: center;
-        justify-content: space-between;
 
         .description {
             margin-left: 15px;
+            margin-right: 15px;
+            width: 100%;
 
             input,
             .label {
+                text-align: left;
+                width: 100%;
                 font-size: 24px;
                 padding: 10px 10px;
-                border: 1px solid rgba(255, 0, 0, 0);
+                border: 2px solid rgba(255, 0, 0, 0);
                 border-radius: 7px;
             }
 
             input {
-                border: 1px solid seagreen;
+                border: 2px solid seagreen;
             }
 
             input:focus {
