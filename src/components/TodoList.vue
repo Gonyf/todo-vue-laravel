@@ -5,7 +5,10 @@
         <div class="textAndCheckbox">
             <input type="checkbox" v-model="todo.done">
             <div class="description" :class="{done : todo.done}">
-                {{todo.description}}
+                <input :ref="'todoInput-'+todo.id" v-if="todo.editing" type="text" v-model="todo.description" @keyup.enter="unsetEditing(todo)" v-on:blur="unsetEditing(todo)">
+                <div v-else class="label" @dblclick="setEditing(todo)">
+                    {{todo.description}}
+                </div>
             </div>
         </div>
         <div class="removeItem" @click="removeTodo(index)">&times;</div>
@@ -23,7 +26,9 @@ export default {
             todos: [{
                 'id': 1,
                 'description': "testing",
-                'done': false
+                'savedDescription': "",
+                'done': false,
+                'editing': false
             }]
         }
     },
@@ -43,7 +48,20 @@ export default {
         },
         toggleDone(todo) {
             todo.done = !todo.done
-            alert('test')
+        },
+        setEditing(todo) {
+            todo.savedDescription = todo.description
+            todo.editing = true
+            this.$nextTick(() => {
+                let input = this.$refs["todoInput-" + todo.id];
+                input.focus()
+            })
+        },
+        unsetEditing(todo) {
+            if (todo.description.length === 0) {
+                todo.description = todo.savedDescription
+            }
+            todo.editing = false
         }
     }
 }
@@ -58,7 +76,8 @@ export default {
     font-size: 28px;
     border-width: 5px;
     border-color: seagreen;
-    margin-bottom: 30px;
+    border-radius: 7px;
+    margin-bottom: 60px;
     // border-radius: 500px;
 
     &:focus {
@@ -69,11 +88,12 @@ export default {
 
 .todoItem {
     width: 100%;
-    padding: 15px 10px;
     font-size: 24px;
     // text-align: left;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 
     .textAndCheckbox {
         display: flex;
@@ -82,7 +102,24 @@ export default {
 
         .description {
             margin-left: 15px;
+
+            input,
+            .label {
+                font-size: 24px;
+                padding: 10px 10px;
+                border: 1px solid rgba(255, 0, 0, 0);
+                border-radius: 7px;
+            }
+
+            input {
+                border: 1px solid seagreen;
+            }
+
+            input:focus {
+                outline: none;
+            }
         }
+
     }
 }
 
